@@ -1,58 +1,57 @@
-const products = [
+// Product Data Array
+const assets = [
     {
         id: 1,
-        title: "E-commerce UI Kit",
-        category: "Graphics",
-        price: "$19",
-        sales: 124,
-        description: "Professional Figma UI kit for modern online stores.",
-        image: "https://via.placeholder.com/400x250/3b82f6/ffffff?text=UI+Kit"
+        name: "Ultimate E-com Template",
+        type: "Template",
+        price: "$24",
+        sales: 540,
+        img: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=400&q=80"
     },
     {
         id: 2,
-        title: "Admin Dashboard Script",
-        category: "Scripts",
-        price: "$49",
-        sales: 89,
-        description: "Full-featured Node.js dashboard with dark mode support.",
-        image: "https://via.placeholder.com/400x250/10b981/ffffff?text=Admin+Panel"
+        name: "NodeJS Auth System",
+        type: "Script",
+        price: "$15",
+        sales: 312,
+        img: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80"
     },
-    // নতুন প্রোডাক্ট এখানে যোগ করতে পারবেন
+    {
+        id: 3,
+        name: "Dashboard UI Kit",
+        type: "Template",
+        price: "$39",
+        sales: 890,
+        img: "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&w=400&q=80"
+    }
 ];
 
-function displayProducts(filteredData) {
-    const container = document.getElementById('product-container');
-    container.innerHTML = '';
+const container = document.getElementById('product-container');
 
-    filteredData.forEach(product => {
-        container.innerHTML += `
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden product-card">
-                <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-bold uppercase text-blue-500 bg-blue-50 px-2 py-1 rounded">${product.category}</span>
-                        <span class="text-sm text-gray-500"><i class="fa-solid fa-cart-shopping"></i> ${product.sales} Sales</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">${product.title}</h3>
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-bold text-gray-900">${product.price}</span>
-                        <button class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition">View Details</button>
-                    </div>
+function render(data) {
+    container.innerHTML = data.map(item => `
+        <div class="product-card bg-white rounded-2xl overflow-hidden">
+            <img src="${item.img}" alt="${item.name}" class="w-full h-52 object-cover">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-[10px] font-bold tracking-widest uppercase bg-blue-50 text-blue-600 px-2 py-1 rounded">${item.type}</span>
+                    <span class="text-xs text-slate-400"><i class="fa-solid fa-fire text-orange-400"></i> ${item.sales} sold</span>
+                </div>
+                <h3 class="text-lg font-bold mb-4">${item.name}</h3>
+                <div class="flex items-center justify-between border-t pt-4">
+                    <span class="text-xl font-black">${item.price}</span>
+                    <button class="text-blue-600 font-bold hover:underline">View Details</button>
                 </div>
             </div>
-        `;
-    });
+        </div>
+    `).join('');
 }
 
-function filterProducts(category) {
-    if (category === 'All') {
-        displayProducts(products);
-    } else {
-        const filtered = products.filter(p => p.category === category);
-        displayProducts(filtered);
-    }
+function filterProducts(type) {
+    if (type === 'All') return render(assets);
+    const filtered = assets.filter(item => item.type === type);
+    render(filtered);
 }
 
-// Initial Load
-displayProducts(products);
+// Initial Load with minor delay for smooth effect
+window.onload = () => render(assets);
