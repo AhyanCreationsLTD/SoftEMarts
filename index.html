@@ -3,41 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Softemarts - Premium Digital Assets</title>
+    <title>Softemarts | Premium Digital Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        .product-card:hover { transform: translateY(-5px); transition: 0.3s; }
+        :root { --primary: #2563eb; }
+        .product-card { transition: all 0.3s ease; border: 1px solid #f0f0f0; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); border-color: var(--primary); }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-slate-50 text-slate-900">
 
-    <nav class="sticky top-0 z-50 glass-nav border-b border-gray-200 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-blue-600">Softemarts</h1>
-            <div class="space-x-4 hidden md:block">
-                <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
-                <a href="#products" class="text-gray-600 hover:text-blue-600">Assets</a>
-            </div>
-            <button class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm">Sign In</button>
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="#" class="text-2xl font-black text-blue-600 tracking-tighter">SOFTEMARTS</a>
+            <nav class="hidden md:flex space-x-8 font-medium text-slate-600">
+                <a href="#" class="hover:text-blue-600 transition">Browse</a>
+                <a href="#" class="hover:text-blue-600 transition">Categories</a>
+                <a href="#" class="hover:text-blue-600 transition">Sell Assets</a>
+            </nav>
+            <button class="bg-slate-900 text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-blue-600 transition">Explore</button>
         </div>
-    </nav>
+    </header>
 
-    <section class="py-16 px-4 text-center bg-gradient-to-r from-blue-50 to-indigo-50">
-        <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Premium Digital Assets</h2>
-        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">High-quality code, graphics, and templates for your next project. Secure and instant delivery.</p>
+    <section class="py-20 px-4 text-center">
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">Curated <span class="text-blue-600">Digital Assets</span> for Creators.</h1>
+        <p class="text-slate-500 text-lg max-w-2xl mx-auto mb-10">High-performance scripts, UI kits, and software templates. Verified quality, instant delivery.</p>
         
-        <div class="flex flex-wrap justify-center gap-3 mb-10" id="category-filters">
-            <button onclick="filterProducts('All')" class="px-6 py-2 bg-blue-600 text-white rounded-full text-sm font-medium">All</button>
-            <button onclick="filterProducts('Scripts')" class="px-6 py-2 bg-white border rounded-full text-sm font-medium hover:bg-blue-50">Scripts</button>
-            <button onclick="filterProducts('Graphics')" class="px-6 py-2 bg-white border rounded-full text-sm font-medium hover:bg-blue-50">Graphics</button>
+        <div class="flex flex-wrap justify-center gap-2" id="filter-buttons">
+            <button onclick="filterProducts('All')" class="px-6 py-2 rounded-full bg-blue-600 text-white font-semibold">All Assets</button>
+            <button onclick="filterProducts('Script')" class="px-6 py-2 rounded-full bg-white text-slate-600 font-semibold border hover:border-blue-600 transition">Scripts</button>
+            <button onclick="filterProducts('Template')" class="px-6 py-2 rounded-full bg-white text-slate-600 font-semibold border hover:border-blue-600 transition">Templates</button>
         </div>
     </section>
 
-    <main class="container mx-auto px-4 py-12" id="products">
+    <main class="container mx-auto px-4 pb-24">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-container">
-            </div>
+            <p class="text-center col-span-full text-slate-400">Loading premium assets...</p>
+        </div>
     </main>
 
     <script src="script.js"></script>
