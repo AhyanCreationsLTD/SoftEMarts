@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoStreamingBD | Enjoy 24/7 Live Streaming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: #020617; color: #f8fafc; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); }
+        
+        /* Full Page Live Animation - সাকসেস হলে চলবে */
+        #liveOverlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            z-index: 0; animation: glow 3s infinite alternate; pointer-events: none;
+        }
+        @keyframes glow { from { opacity: 0.2; transform: scale(1); } to { opacity: 0.6; transform: scale(1.1); } }
+
+        .loading-ring { border: 3px solid #1e293b; border-top: 3px solid #3b82f6; border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .input-style { background: rgba(0,0,0,0.3); border: 1px solid rgba(59,130,246,0.1); transition: 0.4s; }
+        .input-style:focus { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59,130,246,0.2); outline: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-6">
+
+    <div id="liveOverlay"></div>
+
+    <nav class="w-full max-w-4xl flex justify-between items-center py-8 z-10">
+        <div class="text-2xl font-black tracking-widest text-blue-500">AUTO<span class="text-white text-3xl">STREAMING</span>BD</div>
+        <div class="flex items-center gap-2 px-3 py-1 glass rounded-full">
+            <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+            <span class="text-[9px] font-bold uppercase opacity-80 tracking-widest">Full HD Quality</span>
+        </div>
+    </nav>
+
+    <main class="w-full max-w-xl z-10">
+        <div class="glass p-10 md:p-14 rounded-[3rem] shadow-2xl relative">
+            
+            <div id="mainForm">
+                <div class="text-center mb-10">
+                    <h1 class="text-3xl font-extrabold mb-2 tracking-tight">Cloud Stream</h1>
+                    <p class="text-gray-500 text-xs">Streaming আইডি এবং Video আইডি দিন এবং ৫ মিনিট ফ্রি ট্রায়াল শুরু করুন</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="text-[10px] font-bold text-blue-400 uppercase tracking-widest ml-1">Stream Key</label>
+                        <input type="password" id="sKey" placeholder="••••••••••••••••" class="input-style w-full px-6 py-4 rounded-2xl mt-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-blue-400 uppercase tracking-widest ml-1">YouTube Video ID</label>
+                        <input type="text" id="vID" placeholder="যেমন: dQw4w9WgXcQ" class="input-style w-full px-6 py-4 rounded-2xl mt-2 text-sm">
+                    </div>
+                    <button onclick="validateAndLaunch()" id="launchBtn" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black uppercase tracking-[3px] transition-all shadow-lg active:scale-95">
+                        Start Live
+                    </button>
+                </div>
+            </div>
+
+            <div id="statusArea" class="hidden text-center py-12">
+                <div class="loading-ring mx-auto mb-6"></div>
+                <p id="statusMsg" class="text-blue-400 font-bold text-sm tracking-widest animate-pulse">ESTABLISHING CONNECTION...</p>
+                <p class="text-[10px] text-gray-500 mt-4">সার্ভার প্রোভিশনিং হচ্ছে, দয়া করে অপেক্ষা করুন।</p>
+            </div>
+
+            <div id="limitBox" class="hidden space-y-4">
+                <div class="bg-red-500/10 border border-red-500/20 p-5 rounded-3xl text-red-400 text-xs text-center font-bold">
+                    সিস্টেম বর্তমানে ফুল! ৫ জন ইউজার লাইভ করছেন।
+                </div>
+                <div id="timers" class="space-y-3"></div>
+                <button onclick="location.reload()" class="w-full mt-4 text-[10px] uppercase font-bold text-gray-500 hover:text-white transition">Refresh Status</button>
+            </div>
+
+            <div id="finalBox" class="hidden space-y-6 text-center">
+                <div class="bg-blue-600/10 p-8 rounded-[2.5rem] border border-blue-500/20">
+                    <h3 class="text-2xl font-black text-white mb-4">আপনার ৫ মিনিটের ট্রায়াল টি সফলভাবে শেষ হয়েছে! ✅</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                        আপনার নিজস্ব লাইভ setup করিয়ে নিতে যোগাযোগ করুন <br>
+                        <a href="https://wa.me/8801604444716" class="text-blue-500 font-black text-xl underline block mt-2 tracking-tighter">+8801604444716 (Whatsapp)</a>
+                    </p>
+                    <p class="text-[11px] text-gray-500">এবার কম খরচে আপনার চ্যানেল হবে ইউটিউব এর সেরা প্ল্যাটফর্ম। আর হ্যাঁ আমাদের থেকে সার্ভিস নিলে পেমেন্ট করার আগেই সবকিছু ঠিকঠাক মতো চেক করে তারপর পেমেন্ট করতে পারবেন।</p>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-white/5 text-[10px] text-gray-600 leading-relaxed">
+                <b>বিদ্র:</b> Ahyan Creations LTD কখনো কারো থেকে personal তথ্য চাই না। আপনার সফলতা আমাদের কাম্য, ফ্রি ট্রায়াল নেওয়ার জন্য আন্তরিক ধন্যবাদ।
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const CFG = {
+            TOKEN: "YOUR_GITHUB_TOKEN",
+            ORG: "Your_Org_Name",
+            REPO: "Your_Repo_Name",
+            BOT: "YOUR_BOT_TOKEN",
+            CHAT: "YOUR_CHAT_ID"
+        };
+
+        // স্লট ট্র্যাকিং (সিমুলেশন - এটি ডাটাবেজ ছাড়া ক্লায়েন্ট সাইডে পারফেক্ট কাজ করবে না, তবে ইউজার ফিল পাবে)
+        let activeStreams = [
+            { id: 1, end: Date.now() + 150000 },
+            { id: 2, end: Date.now() + 240000 }
+        ];
+
+        async function validateAndLaunch() {
+            const key = document.getElementById('sKey').value.trim();
+            const id = document.getElementById('vID').value.trim();
+            
+            if(!key || !id) return alert("সব ঘর পূরণ করুন!");
+
+            // ১. আইপি চেক
+            if(localStorage.getItem('asbd_trial_used')) {
+                return alert("আপনি আগেই সার্ভিস টি নিয়েছেন! সম্পূর্ণ লাইভ সেটআপের জন্য যোগাযোগ করুন: +8801604444716 (Whatsapp)");
+            }
+
+            // ২. ৫ জন স্লট চেক
+            if(activeStreams.length >= 5) {
+                document.getElementById('mainForm').classList.add('hidden');
+                document.getElementById('limitBox').classList.remove('hidden');
+                const timers = document.getElementById('timers');
+                activeStreams.forEach((s, i) => {
+                    const min = Math.ceil((s.end - Date.now()) / 60000);
+                    timers.innerHTML += `<div class="p-4 glass rounded-2xl flex justify-between"><span class="text-[10px] font-bold">NODE ${i+1}</span><span class="text-blue-500 font-bold">${min} Min Left</span></div>`;
+                });
+                return;
+            }
+
+            document.getElementById('mainForm').classList.add('hidden');
+            document.getElementById('statusArea').classList.remove('hidden');
+
+            // ১০ সেকেন্ড টাইমআউট কন্ট্রোলার
+            const controller = new AbortController();
+            const timeout = setTimeout(() => {
+                controller.abort();
+                alert("দুঃখিত! লাইভ কানেক্ট হতে সমস্যা হচ্ছে, দয়া করে আপনার ইন্টারনেট চেক করুন এবং কিছুক্ষণ পর আবার চেষ্টা করুন।");
+                location.reload();
+            }, 10000);
+
+            try {
+                // IP Logging to Telegram
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                
+                fetch(`https://api.telegram.org/bot${CFG.BOT}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ chat_id: CFG.CHAT, text: `🚀 New Trial Request!\nIP: ${ipData.ip}\nVideoID: ${id}` })
+                });
+
+                // GitHub Dispatch
+                const res = await fetch(`https://api.github.com/repos/${CFG.ORG}/${CFG.REPO}/actions/workflows/live.yml/dispatches`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${CFG.TOKEN}`, 'Accept': 'application/vnd.github+json' },
+                    body: JSON.stringify({ ref: 'main', inputs: { stream_key: key, video_id: id } }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeout);
+
+                if(res.ok) {
+                    launchSuccess();
+                } else {
+                    throw new Error();
+                }
+
+            } catch (err) {
+                if(err.name !== 'AbortError') {
+                    alert("AhyanCreationsLTD সার্ভার কানেকশন এরর! হতে পারে সার্ভার আপডেট চলছে। বেশি সময় লাগলে AutoStreamingBD Team এর‌ সাথে যোগাযোগ করুন।");
+                    location.reload();
+                }
+            }
+        }
+
+        function launchSuccess() {
+            document.getElementById('statusArea').classList.add('hidden');
+            document.getElementById('liveOverlay').style.display = "block"; // Full page animation starts
+            localStorage.setItem('asbd_trial_used', 'true');
+
+            // ৫ মিনিট লাইভ অ্যানিমেশন চলবে
+            setTimeout(() => {
+                document.getElementById('liveOverlay').style.display = "none";
+                document.getElementById('finalBox').classList.remove('hidden');
+            }, 300000);
+        }
+    </script>
+</body>
+</html>
